@@ -1,0 +1,52 @@
+
+services:
+
+  web:
+    image: dockerized-django
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        REQUIREMENTS_FILE: "requirements.txt"
+    command: gunicorn -c python:config.gunicorn_conf --bind :8000 config.wsgi:application
+    restart: always
+    expose:
+      - 8000
+    depends_on:
+      - dockerized_db
+    env_file:
+      - .env
+    volumes:
+      - dockerized_media:/code/media
+      - dockerized_static:/code/static
+    networks:
+      - dockerized-net
+
+
+  dockerized_db:
+    image: postgres
+    restart: always
+    env_file:
+      - development.env
+    volumes:
+      - dockerized_postgres_data_storage:/var/lib/postgresql/data/pgdata
+    networks:
+      - dockerized-net
+
+
+  dockerized_redis:
+    image: redis:6.2
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - dockerized_redis_data:/data
+    networks:
+      - dockerized-net
+
+volumes:
+  dockerized_postgres_data_storage:
+  dockerized_redis_data:
+
+networks:
+  dockerized-net:
