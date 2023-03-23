@@ -1,6 +1,5 @@
 import os
 import sys
-from datetime import timedelta
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -8,7 +7,6 @@ load_dotenv()  # take environment variables from .env.
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 DEBUG = False
@@ -103,8 +101,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'utils.api.custom_pagination.CustomLimitOffsetPagination',
-    'PAGE_SIZE': 36,
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
@@ -116,17 +112,16 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.NamespaceVersioning',
     'ALLOWED_VERSIONS': ['v1'],
-    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
 }
 
 
 # Schema configs
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'Puzzlelity',
-    'DESCRIPTION': 'Puzzlelity API Documentation.',
+    'TITLE': 'Dockerized',
+    'DESCRIPTION': 'Dockerized API Documentation.',
     'TOS': None,
     'Created By': {
-        'name': 'Puzzlelity Backend Team',
+        'name': 'Dockerized Backend Team',
     },
     'SCHEMA_PATH_PREFIX': '/api/v1',
     'COMPONENT_SPLIT_REQUEST': True,
@@ -143,7 +138,6 @@ CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
         'LOCATION': f'rediss://{REDIS_USER}:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/',
-        # "LOCATION": f"redis://{REDIS_HOST}:{REDIS_PORT}/",  # Use list of locations in order to use Redis cluster
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
             'PASSWORD': REDIS_PASSWORD,

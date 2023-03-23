@@ -1,5 +1,8 @@
 from .base import *
 
+
+load_dotenv('development.env', override=True)
+
 DEBUG = True
 
 DATABASES = {
